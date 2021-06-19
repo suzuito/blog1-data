@@ -102,12 +102,6 @@ func fetchFilesFromPR(
 
 func main() {
 	ctx := context.Background()
-	prNumberString := os.Getenv("PR_NUMBER")
-	prNumber, err := strconv.Atoi(prNumberString)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%+v\n", err)
-		os.Exit(1)
-	}
 	filesRemoved := []string{}
 	filesModified := []string{}
 	if os.Args[1] == "all" {
@@ -120,6 +114,12 @@ func main() {
 			filesModified = append(filesModified, "articles/"+entry.Name())
 		}
 	} else if os.Args[1] == "pr" {
+		prNumberString := os.Getenv("PR_NUMBER")
+		prNumber, err := strconv.Atoi(prNumberString)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%+v\n", err)
+			os.Exit(1)
+		}
 		if err := fetchFilesFromPR(ctx, prNumber, &filesRemoved, &filesModified); err != nil {
 			fmt.Fprintf(os.Stderr, "%+v\n", err)
 			os.Exit(1)
