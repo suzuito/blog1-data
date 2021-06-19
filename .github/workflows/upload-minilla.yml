@@ -6,7 +6,7 @@ jobs:
     name: Run unit test ${{ matrix.go }}
     strategy:
       matrix:
-        go: [ '1.15.x' ]
+        go: [ '1.16.x' ]
     runs-on: ubuntu-latest
     env:
       BUCKET: suzuito-minilla-blog1-article
@@ -16,4 +16,5 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
       - run: env
-      # - run: go run ./cmd/main.go pr 
+      - run: PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+      - run: go run ./cmd/main.go pr 

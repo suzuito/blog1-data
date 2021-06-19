@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"cloud.google.com/go/storage"
@@ -56,6 +57,7 @@ func update(
 
 func fetchFilesFromPR(
 	ctx context.Context,
+	prNumber int,
 	filesRemoved *[]string,
 	filesModified *[]string,
 ) error {
@@ -69,7 +71,7 @@ func fetchFilesFromPR(
 			ctx,
 			"suzuito",
 			"blog1-data",
-			1,
+			prNumber,
 			&github.ListOptions{
 				Page: page,
 			},
@@ -101,6 +103,12 @@ func fetchFilesFromPR(
 
 func main() {
 	ctx := context.Background()
+	prNumberString := os.Getenv("PR_NUMBER")
+	prNumber, err := strconv.Atoi(prNumberString)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%+v\n", err)
+		os.Exit(1)
+	}
 	filesRemoved := []string{}
 	filesModified := []string{}
 	if os.Args[1] == "all" {
@@ -113,7 +121,7 @@ func main() {
 			filesModified = append(filesModified, "articles/"+entry.Name())
 		}
 	} else if os.Args[1] == "pr" {
-		if err := fetchFilesFromPR(ctx, &filesRemoved, &filesModified); err != nil {
+		if err := fetchFilesFromPR(ctx, prNumber, &filesRemoved, &filesModified); err != nil {
 			fmt.Fprintf(os.Stderr, "%+v\n", err)
 			os.Exit(1)
 		}
