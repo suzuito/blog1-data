@@ -25,8 +25,7 @@ func update(
 		return err
 	}
 	defer cliGCS.Close()
-	// bucket := os.Getenv("BUCKET")
-	bucket := "suzuito-minilla-blog1-article"
+	bucket := os.Getenv("BUCKET")
 	bh := cliGCS.Bucket(bucket)
 	for _, file := range filesModified {
 		oh := bh.Object(filepath.Base(file))
