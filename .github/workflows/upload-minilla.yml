@@ -11,9 +11,12 @@ jobs:
     env:
       BUCKET: suzuito-minilla-blog1-article
       GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY_MINILLA }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v1
         with:
           go-version: ${{ matrix.go }}
+      - run: echo "${GCP_SA_KEY}" > a.json
+      - run: cat a.json
       - run: PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }') go run ./cmd/main.go pr 
