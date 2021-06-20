@@ -11,12 +11,17 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/google/go-github/github"
+	"github.com/suzuito/blog1-go/entity/model"
+	"github.com/suzuito/blog1-go/inject"
+	"github.com/suzuito/blog1-go/setting"
+	"github.com/suzuito/blog1-go/usecase"
 	"golang.org/x/oauth2"
 	"golang.org/x/xerrors"
 )
 
 func update(
 	ctx context.Context,
+	u usecase.Usecase,
 	filesRemoved []string,
 	filesModified []string,
 ) error {
@@ -28,12 +33,16 @@ func update(
 	bucket := os.Getenv("BUCKET")
 	bh := cliGCS.Bucket(bucket)
 	for _, file := range filesModified {
-		oh := bh.Object(filepath.Base(file))
-		w := oh.NewWriter(ctx)
 		src, err := ioutil.ReadFile(file)
 		if err != nil {
 			return err
 		}
+		article := model.Article{}
+		if err := u.ConvertMD(ctx, src, &article, &[]byte{}); err != nil {
+			return err
+		}
+		oh := bh.Object(fmt.Sprintf("%s.md", article.ID))
+		w := oh.NewWriter(ctx)
 		if _, err := w.Write(src); err != nil {
 			return err
 		}
@@ -102,6 +111,24 @@ func fetchFilesFromPR(
 
 func main() {
 	ctx := context.Background()
+	env, err := setting.NewEnvironment()
+	if err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(1)
+	}
+	gdeps, gcloseFunc, err := inject.NewGlobalDepends(ctx, env)
+	if err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(1)
+	}
+	defer gcloseFunc()
+	cdeps, ccloseFunc, err := inject.NewContextDepends(ctx, env)
+	if err != nil {
+		fmt.Printf("%+v\n", err)
+		os.Exit(1)
+	}
+	defer ccloseFunc()
+	u := usecase.NewImpl(env, cdeps.DB, cdeps.Storage, gdeps.MDConverter)
 	filesRemoved := []string{}
 	filesModified := []string{}
 	if os.Args[1] == "all" {
@@ -125,7 +152,7 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	if err := update(ctx, filesRemoved, filesModified); err != nil {
+	if err := update(ctx, u, filesRemoved, filesModified); err != nil {
 		fmt.Fprintf(os.Stderr, "%+v\n", err)
 		os.Exit(1)
 	}
