@@ -1,4 +1,4 @@
-name: upload-godzilla
+name: sandbox
 on:
   push:
     tags:
