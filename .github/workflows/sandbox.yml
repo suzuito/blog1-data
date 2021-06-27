@@ -2,7 +2,7 @@ name: upload-godzilla
 on:
   push:
     tags:
-       - "mr-[0-9]+"
+       - "mr/[0-9]+"
 jobs:
   test:
     name: Run unit test ${{ matrix.go }}
