@@ -232,8 +232,6 @@ github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5
 github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/suzuito/autr-go v0.0.0-20190927125214-bc5f7aea5bdc/go.mod h1:TwqTuK8Z5WFGOeTff+11/CXkNfz9YSmll5FvTo+GwlI=
-github.com/suzuito/blog1-go v0.0.7-0.20210620033714-7f7af2417e36 h1:sElWRbShEiaquw+RKdcVcfxnAFehGKEg/AByagCBO0Q=
-github.com/suzuito/blog1-go v0.0.7-0.20210620033714-7f7af2417e36/go.mod h1:qBSoPMH0Y3s2oL2fEVgNm0m5erYqht8lcaK6yNxbvCM=
 github.com/suzuito/blog1-go v0.0.7-0.20210620035829-e93a39a998cb h1:0zxGpXnuJtW3UpLH1ybDleHlcVSDT6g1goo75SVO6ok=
 github.com/suzuito/blog1-go v0.0.7-0.20210620035829-e93a39a998cb/go.mod h1:qBSoPMH0Y3s2oL2fEVgNm0m5erYqht8lcaK6yNxbvCM=
 github.com/suzuito/chat001 v0.2.0/go.mod h1:NNvHgMtt3sSSg8MTvpjHMAE2m0gH75KpqIuyy3opdCM=
