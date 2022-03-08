@@ -1,4 +1,5 @@
 ---
+id: 0000000018
 tags: [Angular,monorepo]
 title: Angularでmonorepo
 description: |-
