@@ -1,4 +1,5 @@
 ---
+id: 0000000021
 tags: [Go,Memo,Module]
 title: ForkされたレポジトリをGoパッケージとしてimportする方法
 description: |-
